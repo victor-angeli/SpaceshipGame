@@ -87,27 +87,28 @@ while playing:
         if keys[pygame.K_DOWN] and player.rect.y < screen_height - player_height:
             player.rect.y += player_speed
 
-    # posição do objeto
-    obj_y += obj_speed  # faz com que o objeto caia em vertical
+        # posição do objeto
+        obj_y += obj_speed  # faz com que o objeto caia em vertical
 
-    # posição do objeto reset
-    if obj_y > screen_height:
-        game_over = True
+        # posição do objeto reset
+        if obj_y > screen_height:
+            game_over = True
+            
+        elif (player.rect.x < obj_x + obj_width and 
+            player.rect.x + player_width > obj_x and 
+            player.rect.y < obj_y + obj_height and 
+            player.rect.y + player_height > obj_y):
+            score += 1
+            obj_y = -obj_height
+            obj_x = random.randint(0, screen_width - obj_width)
+            obj_speed += 1
+        #controle de velocidade
+        if obj_speed > max_speed_obj:
+            obj_speed = max_speed_obj
         
-    elif (player.rect.x < obj_x + obj_width and 
-        player.rect.x + player_width > obj_x and 
-        player.rect.y < obj_y + obj_height and 
-        player.rect.y + player_height > obj_y):
-        score += 1
-        obj_y = -obj_height
-        obj_x = random.randint(0, screen_width - obj_width)
-        obj_speed += 1
-    if obj_speed > max_speed_obj:
-        obj_speed = max_speed_obj
-    
-    #condição de vitoria
-    if score > score_limit:
-        win= True
+        #condição de vitoria
+        if score > score_limit:
+            win= True
 
     # desenhar jogador
     screen.blit(player.image, player.rect)
@@ -130,7 +131,7 @@ while playing:
             score = 0
             obj_speed= 2
             obj_y = -obj_height
-            player.rect.center=(screen_width //2, screen_height - player.image.get_height()-10)
+            player.rect.center = (screen_width //2, screen_height - player.image.get_height()-10)
 
     # tela e fps
     pygame.display.flip()
